@@ -1,0 +1,31 @@
+{
+  "name": "joepe-discord-bot",
+  "version": "1.0.0",
+  "description": "A multipurpose discord bot",
+  "homepage": "https://github.com/pejoedev/joepe-discord-bot#readme",
+  "bugs": {
+    "url": "https://github.com/pejoedev/joepe-discord-bot/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pejoedev/joepe-discord-bot.git"
+  },
+  "license": "ISC",
+  "author": "Pejoe.dev",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "discord.js": "^14.25.1",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "@types/node": "^24.10.2",
+    "typescript": "^5.9.3"
+  }
+}
