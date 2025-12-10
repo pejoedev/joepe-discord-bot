@@ -2,6 +2,7 @@ const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
+const { setupCommand } = require("./src/commands/setupCommand")
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
@@ -46,6 +47,9 @@ client.on('messageCreate', (message) => {
     if (message.author.bot) return;
 
     console.log(message)
+    if (message.content.startsWith("!setup")) {
+        setupCommand(message)
+    }
     if (message.content === '!ping') {
         message.reply('Pong!');
     }
