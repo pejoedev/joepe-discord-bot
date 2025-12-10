@@ -3,6 +3,9 @@ import dotenv from 'dotenv';
 import { Command } from './types/Command';
 import { pingCommand } from './commands/prefix/ping';
 import { helloCommand } from './commands/slash/hello';
+import { multiChannelSetupCommand } from './commands/prefix/multiChannelSetup';
+import { commandParser } from './helper/commandParser';
+import { helpCommand } from './commands/prefix/help';
 
 dotenv.config();
 
@@ -59,10 +62,18 @@ client.on('interactionCreate', async (interaction: BaseInteraction) => {
 
 // Handle prefix commands
 client.on('messageCreate', async (message: Message) => {
-    if (message.author.bot || !message.content.startsWith('!')) return;
+    const messageText = commandParser(message.content)
+    console.log(message, messageText)
+    if (message.author.bot || messageText == "") return;
 
-    if (message.content === '!ping') {
+    if (messageText === 'ping') {
         await pingCommand.execute(message);
+    }
+    if (messageText === 'help') {
+        await helpCommand.execute(message);
+    }
+    if (messageText.startsWith("setup-mc")) {
+        await multiChannelSetupCommand.execute(message);
     }
 });
 
