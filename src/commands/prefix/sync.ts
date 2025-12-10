@@ -42,7 +42,7 @@ export const syncCommand = {
                 { body: commandsData }
             );
 
-            await statusMessage.edit(`✅ Successfully synced ${commandsData.length} slash command(s) globally.`);
+            await statusMessage.edit(`✅ Successfully synced ${commandsData.length} slash command(s) globally.\nDo \`Ctrl+R\` to view them.`);
             console.log(`✅ Synced ${commandsData.length} slash commands`);
         } catch (error) {
             console.error('Failed to sync slash commands:', error);
