@@ -1,0 +1,1 @@
+{"version":3,"file":"ping.js","sourceRoot":"","sources":["../../../src/commands/prefix/ping.ts"],"names":[],"mappings":";;;AAEa,QAAA,WAAW,GAAG;IACzB,IAAI,EAAE,MAAM;IACZ,WAAW,EAAE,qBAAqB;IAClC,OAAO,EAAE,KAAK,EAAE,OAAgB,EAAE,EAAE;QAClC,MAAM,OAAO,CAAC,KAAK,CAAC,UAAU,CAAC,CAAC;IAClC,CAAC;CACF,CAAC"}
