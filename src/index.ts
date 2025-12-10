@@ -6,6 +6,7 @@ import { helloCommand } from './commands/slash/hello';
 import { multiChannelSetupCommand } from './commands/prefix/multiChannelSetup';
 import { commandParser } from './helper/commandParser';
 import { helpCommand } from './commands/prefix/help';
+import { syncCommand } from './commands/prefix/sync';
 
 dotenv.config();
 
@@ -74,6 +75,9 @@ client.on('messageCreate', async (message: Message) => {
     }
     if (messageText.startsWith("setup-mc")) {
         await multiChannelSetupCommand.execute(message);
+    }
+    if (messageText === 'sync') {
+        await syncCommand.execute(message);
     }
 });
 
