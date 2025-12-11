@@ -1,5 +1,6 @@
 import { Message, REST, Routes } from 'discord.js';
 import dotenv from 'dotenv';
+import { syncSlashCommand } from '../slash/sync';
 
 dotenv.config();
 
@@ -33,6 +34,7 @@ export const syncCommand = {
 
             const commandsData = [
                 helloCommand.data.toJSON(),
+                syncSlashCommand.data.toJSON()
                 // Add more slash commands here as you create them
             ];
 

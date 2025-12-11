@@ -1,17 +1,19 @@
-import { Message, REST, Routes } from 'discord.js';
+import { SlashCommandBuilder, ChatInputCommandInteraction, REST, Routes } from 'discord.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 const ownerId = process.env.OWNER_ID;
 
-export const syncCommand = {
-    name: 'sync',
-    description: 'Sync slash commands (Owner only)',
-    execute: async (message: Message) => {
+export const syncSlashCommand = {
+    data: new SlashCommandBuilder()
+        .setName('sync')
+        .setDescription('Sync Slash Commands (Owner only)'),
+
+    execute: async (interaction: ChatInputCommandInteraction) => {
         // Check if user is the owner
-        if (message.author.id !== ownerId) {
-            await message.reply('❌ Only the bot owner can use this command.');
+        if (interaction.user.id !== ownerId) {
+            await interaction.reply({ content: '❌ Only the bot owner can use this command.', ephemeral: true });
             return;
         }
 
@@ -19,12 +21,12 @@ export const syncCommand = {
         const clientId = process.env.CLIENT_ID;
 
         if (!token || !clientId) {
-            await message.reply('❌ Missing DISCORD_TOKEN or CLIENT_ID in .env file.');
+            await interaction.reply({ content: '❌ Missing DISCORD_TOKEN or CLIENT_ID in .env file.', ephemeral: true });
             return;
         }
 
         try {
-            const statusMessage = await message.reply('🔄 Syncing slash commands...');
+            await interaction.deferReply({ ephemeral: true });
 
             const rest = new REST().setToken(token);
 
@@ -33,6 +35,8 @@ export const syncCommand = {
 
             const commandsData = [
                 helloCommand.data.toJSON(),
+                syncSlashCommand.data.toJSON()
+                // Add more slash commands here as you create them
             ];
 
             // Sync globally
@@ -41,11 +45,11 @@ export const syncCommand = {
                 { body: commandsData }
             );
 
-            await statusMessage.edit(`✅ Successfully synced ${commandsData.length} slash command(s) globally.\nDo \`Ctrl+R\` to view them.`);
+            await interaction.editReply(`✅ Successfully synced ${commandsData.length} slash command(s) globally.\nDo \`Ctrl+R\` to view them.`);
             console.log(`✅ Synced ${commandsData.length} slash commands`);
         } catch (error) {
             console.error('Failed to sync slash commands:', error);
-            await message.reply('❌ Failed to sync slash commands. Check console for details.');
+            await interaction.editReply('❌ Failed to sync slash commands. Check console for details.');
         }
     },
 };

@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { Command } from './types/Command';
 import { pingCommand } from './commands/prefix/ping';
 import { helloCommand } from './commands/slash/hello';
+import { syncSlashCommand } from './commands/slash/sync';
 import { multiChannelSetupCommand } from './commands/prefix/multiChannelSetup';
 import { commandParser } from './helper/commandParser';
 import { helpCommand } from './commands/prefix/help';
@@ -33,24 +34,6 @@ const slashCommands = new Collection<string, any>();
 
 client.once('clientReady', async () => {
     console.log(`✅ Bot logged in as ${client.user?.tag}`);
-
-    // Register slash commands
-    if (clientId) {
-        const rest = new REST().setToken(token);
-
-        try {
-            const commandsData = [
-                helloCommand.data.toJSON(),
-            ];
-
-            console.log(`Registering ${commandsData.length} slash command(s)...`);
-
-            await rest.put(Routes.applicationCommands(clientId), { body: commandsData });
-            console.log('✅ Slash commands registered');
-        } catch (error) {
-            console.error('Failed to register slash commands:', error);
-        }
-    }
 });
 
 // Handle slash commands
@@ -63,6 +46,9 @@ client.on('interactionCreate', async (interaction: BaseInteraction) => {
     if (interaction.commandName === 'hello') {
         await helloCommand.execute(interaction);
     }
+    if (interaction.commandName === 'sync') {
+        await syncSlashCommand.execute(interaction);
+    }
 });
 
 // Handle prefix commands
@@ -70,7 +56,6 @@ client.on('messageCreate', async (message: Message) => {
     // Log the message
     logMessage(message);
     const messageText = commandParser(message.content)
-    console.log(message, messageText)
     if (message.author.bot || messageText == "") return;
 
 

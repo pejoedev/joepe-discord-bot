@@ -7,7 +7,6 @@ export const multiChannelSetupCommand = {
     execute: async (message: Message) => {
 
         const shortened = commandParser(message.content).trim();
-        console.log(shortened)
 
         // Parse -channel=<#id> parameter
         const channelMatch = shortened.match(/-channel=\s*<#(\d+)>/);
