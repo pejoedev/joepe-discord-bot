@@ -7,6 +7,7 @@ import { multiChannelSetupCommand } from './commands/prefix/multiChannelSetup';
 import { commandParser } from './helper/commandParser';
 import { helpCommand } from './commands/prefix/help';
 import { syncCommand } from './commands/prefix/sync';
+import { logMessage, logSlashCommand } from './helper/logger';
 
 dotenv.config();
 
@@ -56,6 +57,9 @@ client.once('clientReady', async () => {
 client.on('interactionCreate', async (interaction: BaseInteraction) => {
     if (!interaction.isChatInputCommand()) return;
 
+    // Log the slash command
+    logSlashCommand(interaction);
+
     if (interaction.commandName === 'hello') {
         await helloCommand.execute(interaction);
     }
@@ -63,9 +67,12 @@ client.on('interactionCreate', async (interaction: BaseInteraction) => {
 
 // Handle prefix commands
 client.on('messageCreate', async (message: Message) => {
+    // Log the message
+    logMessage(message);
     const messageText = commandParser(message.content)
     console.log(message, messageText)
     if (message.author.bot || messageText == "") return;
+
 
     if (messageText === 'ping') {
         await pingCommand.execute(message);
