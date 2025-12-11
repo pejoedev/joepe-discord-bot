@@ -69,15 +69,19 @@ client.on('messageCreate', async (message: Message) => {
 
     if (messageText === 'ping') {
         await pingCommand.execute(message);
+        return;
     }
     if (messageText === 'help') {
         await helpCommand.execute(message);
+        return;
     }
     if (messageText.startsWith("setup-mc")) {
         await multiChannelSetupCommand.execute(message);
+        return;
     }
     if (messageText === 'sync') {
         await syncCommand.execute(message);
+        return;
     }
 });
 
