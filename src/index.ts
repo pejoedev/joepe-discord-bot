@@ -1,13 +1,8 @@
 import { Client, GatewayIntentBits, REST, Routes, Collection, Message, BaseInteraction, ChatInputCommandInteraction } from 'discord.js';
 import dotenv from 'dotenv';
 import { Command } from './types/Command';
-import { pingCommand } from './commands/prefix/ping';
-import { helloCommand } from './commands/slash/hello';
-import { syncSlashCommand } from './commands/slash/sync';
-import { multiChannelSetupCommand } from './commands/prefix/multiChannelSetup';
+import { slashCommands, prefixCommands } from './commandRegistry';
 import { commandParser } from './helper/commandParser';
-import { helpCommand } from './commands/prefix/help';
-import { syncCommand } from './commands/prefix/sync';
 import { logMessage, logSlashCommand } from './helper/logger';
 
 dotenv.config();
@@ -29,8 +24,11 @@ const client = new Client({
     ],
 });
 
-// Store slash commands
-const slashCommands = new Collection<string, any>();
+// Store slash commands in a Collection for quick lookup
+const slashCommandsCollection = new Collection<string, any>();
+slashCommands.forEach(cmd => {
+    slashCommandsCollection.set(cmd.data.name, cmd);
+});
 
 client.once('clientReady', async () => {
     console.log(`✅ Bot logged in as ${client.user?.tag}`);
@@ -43,11 +41,9 @@ client.on('interactionCreate', async (interaction: BaseInteraction) => {
     // Log the slash command
     logSlashCommand(interaction);
 
-    if (interaction.commandName === 'hello') {
-        await helloCommand.execute(interaction);
-    }
-    if (interaction.commandName === 'sync') {
-        await syncSlashCommand.execute(interaction);
+    const command = slashCommandsCollection.get(interaction.commandName);
+    if (command) {
+        await command.execute(interaction);
     }
 });
 
@@ -58,22 +54,10 @@ client.on('messageCreate', async (message: Message) => {
     const messageText = commandParser(message.content)
     if (message.author.bot || messageText == "") return;
 
-
-    if (messageText === 'ping') {
-        await pingCommand.execute(message);
-        return;
-    }
-    if (messageText === 'help') {
-        await helpCommand.execute(message);
-        return;
-    }
-    if (messageText.startsWith("setup-mc")) {
-        await multiChannelSetupCommand.execute(message);
-        return;
-    }
-    if (messageText === 'sync') {
-        await syncCommand.execute(message);
-        return;
+    // Find and execute the matching prefix command
+    const command = prefixCommands.find(cmd => cmd.name === messageText);
+    if (command) {
+        await command.execute(message);
     }
 });
 

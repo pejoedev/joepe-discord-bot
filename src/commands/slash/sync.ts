@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction, REST, Routes } from 'discord.js';
 import dotenv from 'dotenv';
+import { slashCommands } from '../../commandRegistry';
 
 dotenv.config();
 
@@ -30,14 +31,8 @@ export const syncSlashCommand = {
 
             const rest = new REST().setToken(token);
 
-            // Import all slash commands here
-            const { helloCommand } = await import('../slash/hello');
-
-            const commandsData = [
-                helloCommand.data.toJSON(),
-                syncSlashCommand.data.toJSON()
-                // Add more slash commands here as you create them
-            ];
+            // Use the command registry to get all slash commands
+            const commandsData = slashCommands.map(cmd => cmd.data.toJSON());
 
             // Sync globally
             await rest.put(
