@@ -10,7 +10,7 @@ export const syncSlashCommand = {
     data: new SlashCommandBuilder()
         .setName('sync')
         .setDescription('Sync Slash Commands (Owner only)'),
-
+    // test
     execute: async (interaction: ChatInputCommandInteraction) => {
         // Check if user is the owner
         if (interaction.user.id !== ownerId) {
