@@ -1,6 +1,6 @@
-# joepe-discord-bot
+# tic-discord-bot
 
-Joepe is a multipurpose Discord bot built with discord.js and TypeScript.
+T.I.C. bot is a multipurpose Discord bot built with discord.js and TypeScript.
 
 ## Features
 

@@ -1,5 +1,5 @@
 {
-  "name": "joepe-discord-bot",
+  "name": "tic-discord-bot",
   "version": "1.0.0",
   "description": "A Discord bot built with discord.js and TypeScript",
   "main": "dist/index.js",
@@ -11,6 +11,7 @@
   },
   "keywords": ["discord", "bot", "typescript"],
   "author": "",
+  "owner": "The-IFUYAPH-Club",
   "license": "MIT",
   "dependencies": {
     "discord.js": "^14.14.1",
